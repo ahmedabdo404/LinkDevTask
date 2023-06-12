@@ -1,4 +1,6 @@
-﻿using LinkDevTask.Application.Servcices.Interfaces;
+﻿using LinkDevTask.Application.Helpers;
+using LinkDevTask.Application.Servcices.Interfaces;
+using LinkDevTask.Application.ViewModels.Job;
 using LinkDevTask.Domain.DataAccess;
 using LinkDevTask.Domain.Models;
 using Microsoft.AspNetCore.Identity;
@@ -40,6 +42,36 @@ namespace LinkDevTask.Application.Servcices.Implementations
             }
 
             return IdentityResult.Failed();
+        }
+
+        public async Task<PagedJobVM?> GetJobsOfUserByPage(PageVM page, string searchValue, string username)
+        {
+            var user = _userManager.FindByNameAsync(username);
+            if(user is null)
+            {
+                return default;
+            }
+
+            (var Jobs, var count) = await _unitOfWork._jobRepo
+                .GetByPage(page.start, page.length,
+                    match: job => job.UserJob.Any(uj => uj.User.UserName.Equals(username)),
+                    include: job => job.UserJob);
+
+            IEnumerable<Job> data = Jobs.ToList();
+            if (!string.IsNullOrWhiteSpace(searchValue))
+            {
+                data = data.Where(job => job.Name.Contains(searchValue, StringComparison.OrdinalIgnoreCase));
+            }
+
+            return new PagedJobVM()
+            {
+                RecordsFiltered = count,
+                Data = data.Select(job => {
+                    var jobVm = Mapper.MapTo<JobVM>(job);
+                    jobVm.Id = job.Id;
+                    return jobVm;
+                })
+        };
         }
 
         public async Task<IdentityResult> WithdrawApplication(string userName, string JobId)

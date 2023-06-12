@@ -8,10 +8,8 @@ namespace LinkDevTask.Application.Servcices.Interfaces
         Task<int> AddJob(JobVM newJob, IFormFile file);
         Task<int> DeleteJob(string id);
         Task<int> EditJob(JobVM newJob, IFormFile file);
-        IEnumerable<JobVM> FilterJobsByName(string jobName);
         IEnumerable<JobVM> GetAll();
         JobVM? GetJob(string id);
-        IEnumerable<JobVM> GetJobsByPage(PagedJobVM page, string searchValue);
-        int GetJobsCount();
+        Task<PagedJobVM> GetJobsByPage(PageVM page, string searchValue);
     }
 }

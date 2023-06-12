@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace LinkDevTask.Application.ViewModels.Job
 {
-    public class PagedJobVM
+    public class PageVM
     {
-        public int RecordsFiltered { get; set; }
-        public object Data { get; set; } = null!;
+        public int start { get; set; } = 0;
+        public int length { get; set; } = General.PageSize;
     }
 }

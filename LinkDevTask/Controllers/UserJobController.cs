@@ -1,11 +1,13 @@
-﻿using LinkDevTask.Application.Servcices.Interfaces;
+﻿using LinkDevTask.Application.Consts;
+using LinkDevTask.Application.Servcices.Interfaces;
+using LinkDevTask.Application.ViewModels.Job;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
 namespace LinkDevTask.WebApp.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = UserRoles.User)]
     public class UserJobController : BaseController
     {
         #region ctor
@@ -32,6 +34,25 @@ namespace LinkDevTask.WebApp.Controllers
             }
 
             return RedirectToErrorPage(HttpStatusCode.NotFound);
+        }
+
+        public IActionResult GetAppliedJobs()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> GetAppliedJobs(PageVM pager)
+        {
+            if(User.Identity?.Name is null)
+            {
+                return RedirectToErrorPage(HttpStatusCode.NotFound);
+            }
+
+            var searchValue = Request.Form["search[value]"];
+            var dataTablePaged = await _userJobService.GetJobsOfUserByPage(pager, searchValue, User.Identity.Name);
+
+            return Json(dataTablePaged);
         }
 
         public async Task<IActionResult> WithdrawApplication(string jobId)

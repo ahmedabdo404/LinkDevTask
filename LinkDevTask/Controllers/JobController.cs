@@ -1,5 +1,7 @@
-﻿using LinkDevTask.Application.Servcices.Interfaces;
+﻿using LinkDevTask.Application.Consts;
+using LinkDevTask.Application.Servcices.Interfaces;
 using LinkDevTask.Application.ViewModels.Job;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -15,6 +17,7 @@ namespace LinkDevTask.WebApp.Controllers
             _categoryService = categoryService;
         }
 
+        [Authorize(Roles = UserRoles.Admin)]
         public IActionResult GetAll()
         {
             var allJobs = _jobService.GetAll();
@@ -23,27 +26,22 @@ namespace LinkDevTask.WebApp.Controllers
         }
 
         [HttpPost]
-        public IActionResult GetPagedJobs(PagedJobVM pager)
+        public async Task<IActionResult> GetPagedJobs(PageVM pager)
         {
             var searchValue = Request.Form["search[value]"];
-            var pagedJobs = _jobService.GetJobsByPage(pager, searchValue);
-            var totalPages = _jobService.GetJobsCount();
+            var dataTablePaged = await _jobService.GetJobsByPage(pager, searchValue);
 
-            return Json(new { recordsFiltered = totalPages, data = pagedJobs });
+            return Json(dataTablePaged);
         }
 
-        public IActionResult GetbyPage(string jobName)
-        {
-            var jobs = _jobService.FilterJobsByName(jobName);
-            return View(jobs);
-        }
-
+        [Authorize(Roles = UserRoles.Admin)]
         public IActionResult Add()
         {
             ViewBag.categories = _categoryService.GetAll();
             return View(new JobVM());
         }
 
+        [Authorize(Roles = UserRoles.Admin)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(JobVM job)
@@ -57,6 +55,7 @@ namespace LinkDevTask.WebApp.Controllers
             return View(job);
         }
 
+        [Authorize(Roles = UserRoles.Admin)]
         public IActionResult Edit(string id)
         {
             var job = _jobService.GetJob(id);
@@ -68,6 +67,7 @@ namespace LinkDevTask.WebApp.Controllers
             return View(job);
         }
 
+        [Authorize(Roles = UserRoles.Admin)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(JobVM job)
@@ -81,6 +81,7 @@ namespace LinkDevTask.WebApp.Controllers
             return View(job);
         }
 
+        [Authorize(Roles = UserRoles.Admin)]
         public async Task<IActionResult> Delete(string id)
         {
             await _jobService.DeleteJob(id);

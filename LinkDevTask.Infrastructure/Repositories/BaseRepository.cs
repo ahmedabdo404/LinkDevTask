@@ -78,14 +78,25 @@ namespace LinkDevTask.Infrastructure.Repositories
 
         public long GetCount(Expression<Func<TEntity, bool>>? match = null)
         {
-            return match is null ? _db.Set<TEntity>().LongCount() : _db.Set<TEntity>().LongCount(match);
+            var query = _db.Set<TEntity>();
+            return match is null ? query.LongCount() : query.LongCount(match);
         }
 
-        public IQueryable<TEntity> GetByPage(int skip, int take)
+        public async Task<(IQueryable<TEntity>, int)> GetByPage(int skip, int take, Expression<Func<TEntity, bool>>? match = default,
+            Expression<Func<TEntity, object>>? include = default)
         {
-            return _db.Set<TEntity>()
-                .Skip(skip)
-                .Take(take);
+            IQueryable<TEntity> query = _db.Set<TEntity>();
+
+            if (include is not null)
+            {
+                query = query.Include(include);
+            }
+            if (match is not null)
+            {
+                query = query.Where(match);
+            }
+            var count = await query.CountAsync();
+            return (query.Skip(skip).Take(take), count);
         }
     }
 }

@@ -21,36 +21,26 @@ namespace LinkDevTask.Application.Servcices.Implementations
 
         #endregion
 
-        public IEnumerable<JobVM> GetJobsByPage(PagedJobVM page, string searchValue)
+        public async Task<PagedJobVM> GetJobsByPage(PageVM page, string searchValue)
         {
-            var Jobs = _unitOfWork._jobRepo
-                .GetByPage(page.start, page.length)
-                .AsEnumerable();
+            (var Jobs, var count) = await _unitOfWork._jobRepo
+                .GetByPage(page.start, page.length);
 
+            IEnumerable<Job> data = Jobs.ToList();
             if (!string.IsNullOrWhiteSpace(searchValue))
             {
-                Jobs = Jobs.Where(job => job.Name.Contains(searchValue));
+                data = data.Where(job => job.Name.Contains(searchValue, StringComparison.OrdinalIgnoreCase));
             }
 
-            return Jobs.Select(job => {
-                var jobVm = Mapper.MapTo<JobVM>(job);
-                jobVm.Id = job.Id;
-                //jobVm.CategoryName = job.Name;
-                return jobVm;
-            }).ToList();
-        }
-        public int GetJobsCount()
-        {
-            return (int)_unitOfWork._jobRepo.GetCount();
-        }
-
-        public IEnumerable<JobVM> FilterJobsByName(string jobName)
-        {
-            var Jobs = _unitOfWork._jobRepo.GetAll(job => job.Name.Contains(jobName));
-            foreach (var job in Jobs)
+            return new PagedJobVM()
             {
-                yield return Mapper.MapTo<JobVM>(job);
-            }
+                RecordsFiltered = count,
+                Data = data.Select(job => {
+                    var jobVm = Mapper.MapTo<JobVM>(job);
+                    jobVm.Id = job.Id;
+                    return jobVm;
+                })
+            };
         }
 
         public IEnumerable<JobVM> GetAll()

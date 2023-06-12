@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using LinkDevTask.Application.ViewModels.Job;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,7 @@ namespace LinkDevTask.Application.Servcices.Interfaces
     public interface IUserJobService
     {
         Task<IdentityResult> ApplyJob(string userName, string JobId);
+        Task<PagedJobVM?> GetJobsOfUserByPage(PageVM page, string searchValue, string username);
         Task<int> GetNumberOfAppliedUsers(string userName, string JobId);
         Task<bool> IsUserApplied(string userName, string JobId);
         Task<IdentityResult> WithdrawApplication(string userName, string JobId);

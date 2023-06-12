@@ -33,10 +33,6 @@ p{
     object-fit: fill;
 }
 
-#UserName {
-    cursor: not-allowed;
-}
-
 .formFileSm {
     cursor: pointer;
 }

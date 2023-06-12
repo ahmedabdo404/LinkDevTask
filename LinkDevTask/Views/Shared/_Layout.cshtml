@@ -41,7 +41,7 @@
                             @if (User.IsInRole(UserRoles.User))
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-controller="Job" asp-action="getall">AppliedJobs</a>
+                                    <a class="nav-link text-dark" asp-controller="UserJob" asp-action="GetAppliedJobs">AppliedJobs</a>
                                 </li>
                             }
                         }

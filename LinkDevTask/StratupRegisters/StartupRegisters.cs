@@ -40,7 +40,7 @@ namespace LinkDevTask.WebApp.StratupRegisters
         private static WebApplicationBuilder RegisterDataBaseServices(this WebApplicationBuilder builder)
         {
             builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(
-            builder.Configuration.GetConnectionString("DbConnection")));
+            builder.Configuration.GetConnectionString("DbConnection")), ServiceLifetime.Transient);
 
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             return builder;

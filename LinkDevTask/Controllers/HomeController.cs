@@ -15,7 +15,6 @@ namespace LinkDevTask.WebApp.Controllers
 
         public IActionResult Index()
         {
-            ViewBag.TotalPages = _jobService.GetJobsCount();
             return View();
         }
 
