@@ -14,7 +14,7 @@ namespace LinkDevTask.Domain.Repositories
         IQueryable<TEntity> GetAll(Expression<Func<TEntity, bool>> match);
         Task<(IQueryable<TEntity>, int)> GetByPage(int skip, int take, Expression<Func<TEntity, bool>>? match = default,
             Expression<Func<TEntity, object>>? include = default);
-        long GetCount(Expression<Func<TEntity, bool>>? match = null);
+        int GetCount(Expression<Func<TEntity, bool>>? match = null);
         TEntity? GetOne(Expression<Func<TEntity, bool>> match, Expression<Func<TEntity, object>>? include = null);
         void Update(TEntity entity);
         void UpdateRange(IEnumerable<TEntity> entities);

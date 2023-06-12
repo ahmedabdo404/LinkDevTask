@@ -76,10 +76,10 @@ namespace LinkDevTask.Infrastructure.Repositories
             _db.RemoveRange(entities);
         }
 
-        public long GetCount(Expression<Func<TEntity, bool>>? match = null)
+        public int GetCount(Expression<Func<TEntity, bool>>? match = null)
         {
             var query = _db.Set<TEntity>();
-            return match is null ? query.LongCount() : query.LongCount(match);
+            return match is null ? query.Count() : query.Count(match);
         }
 
         public async Task<(IQueryable<TEntity>, int)> GetByPage(int skip, int take, Expression<Func<TEntity, bool>>? match = default,

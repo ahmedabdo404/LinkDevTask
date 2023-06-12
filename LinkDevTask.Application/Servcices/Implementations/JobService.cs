@@ -43,6 +43,11 @@ namespace LinkDevTask.Application.Servcices.Implementations
             };
         }
 
+        public int GetJobsCount()
+        {
+            return _unitOfWork._jobRepo.GetCount();
+        }
+
         public IEnumerable<JobVM> GetAll()
         {
             var Jobs = _unitOfWork._jobRepo.GetAll(jc => jc.Category);

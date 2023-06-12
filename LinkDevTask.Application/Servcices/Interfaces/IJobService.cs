@@ -11,5 +11,6 @@ namespace LinkDevTask.Application.Servcices.Interfaces
         IEnumerable<JobVM> GetAll();
         JobVM? GetJob(string id);
         Task<PagedJobVM> GetJobsByPage(PageVM page, string searchValue);
+        int GetJobsCount();
     }
 }
