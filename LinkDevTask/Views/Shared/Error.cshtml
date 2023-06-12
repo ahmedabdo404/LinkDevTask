@@ -1,0 +1,36 @@
+﻿@using System.Net;
+@{
+    ViewData["StatusCode"] ??= (int)HttpStatusCode.NotFound;
+    ViewData["CodeMessage"] ??= "Unfortunately, this page does not exist.";
+    ViewData["ExceptionMessage"] ??= "The link you clicked may be broken or the page may have been removed.";
+}
+
+@section Styles{
+    <link rel="stylesheet" href="~/css/error_style.css">
+}
+<div class="d-flex flex-row justify-content-center">
+    <div class="browser">
+        <div class="controls">
+            <i></i>
+            <i></i>
+            <i></i>
+        </div>
+
+        <div class="eye"></div>
+        <div class="eye"></div>
+        <div class="mouth">
+            <div class="lips"></div>
+            <div class="lips"></div>
+            <div class="lips"></div>
+            <div class="lips"></div>
+            <div class="lips"></div>
+            <div class="lips"></div>
+            <div class="lips"></div>
+            <div class="lips"></div>
+        </div>
+    </div>
+</div>
+
+<h1>@ViewData["StatusCode"]: @ViewData["CodeMessage"]</h1>
+<p>@ViewData["ExceptionMessage"]</p>
+<a id="BackLink" onclick="window.history.back()"><h3>Go Back</h3></a>

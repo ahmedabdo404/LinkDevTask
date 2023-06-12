@@ -1,0 +1,80 @@
+﻿@model IEnumerable<UserVM>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>
+                Number
+            </th>
+            
+            <th>
+                Id
+            </th> 
+            
+            <th>
+                FirstName
+            </th>     
+            
+            <th>
+                LastName
+            </th>
+
+            <th>
+                UserName
+            </th>
+
+            <th>
+                Email
+            </th>
+
+            <th>
+                PhoneNumber
+            </th>
+
+            <th>
+                Details
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Select((value, index) => new { index = index + 1, value }))
+        {
+            <tr>
+                <td>
+                    @item.index
+                </td>
+
+                <td>
+                    @item.value.Id
+                </td>
+
+                <td>
+                    @item.value.FirstName
+                </td>
+
+                <td>
+                    @item.value.LastName
+                </td>
+
+                <td>
+                    @item.value.UserName
+                </td>
+
+                <td>
+                    @item.value.Email
+                </td>
+
+                <td>
+                    @item.value.PhoneNumber
+                </td>
+
+                <td>
+                    <a asp-action="GetUserById" asp-route-Id="@item.value.Id" class="btn btn-warning">Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div>
+    <a asp-action="Dashboard">Back</a>
+</div>

@@ -1,0 +1,75 @@
+﻿@model IEnumerable<CategoryVM>
+
+<partial name="_AddCategoryPartial" model="new CategoryVM()"></partial>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>
+                Number
+            </th>
+            <th>
+                Id
+            </th>
+            <th>Name</th>
+            <th>Number Of Jobs</th>
+            <th>Remove</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Select((value, index) => new { index = index + 1, value }))
+        {
+            <tr>
+                <td>
+                    @item.index
+                </td>
+                <td>
+                    @item.value.Id
+                </td>
+                <td>
+                    @item.value.Name
+                </td>
+                <td>
+                    @item.value.JobsInCategoryCount
+                </td>
+                <td>
+                    <button class="btn btn-danger" onclick="DeleteCategoryRequest(event, '@item.value.Id')">
+                        Delete
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div>
+    <a asp-controller="Home" asp-action="index" class="btn btn-link">Back</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        function DeleteCategoryRequest(event, categoryId) {
+            let confirm = ConfirmDelete(event);
+            if (confirm === true) {
+                $.ajax({
+                    url: '@Url.Action("Delete", "Category")',
+                    method: "post",
+                    data: { "id": categoryId },
+                    success: function (response) {
+                        location.reload();
+                    },
+                    error: function (xhr) {
+                        console.log(xhr.responseJSON);
+                        for (let err of xhr.responseJSON) {
+                            alert(err.description)
+                        }
+                    }
+                })
+            }
+
+        }
+    </script>
+
+}

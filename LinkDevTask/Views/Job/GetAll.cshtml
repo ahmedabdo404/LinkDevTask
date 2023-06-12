@@ -1,0 +1,51 @@
+﻿@model IEnumerable<JobVM>
+
+<a asp-action="Add" class="btn btn-primary">Add Job</a>
+<table class="table table-hover">
+    <thead>
+        <th>Number</th>
+        <th>Title Name</th>
+        <th>CreatedAt</th>
+        <th>Category</th>
+        <th>ValidFrom</th>
+        <th>ValidTo</th>
+        <th>Max</th>
+        <th>Details</th>
+        <th>Delete</th>
+    </thead>
+    <tbody>
+        @foreach(var job in Model.Select((value, index) => new { index = index+1, value }
+        )){
+        <tr>
+            <td>@job.index</td>
+            <td>@job.value.Name</td>
+            <td>@job.value.CreatedAt</td>
+            <td>@job.value.CategoryName</td>
+            <td>@job.value.ValidFrom.ToString("d")</td>
+            <td>@job.value.ValidTo.ToString("d")</td>
+            <td>@job.value.MaximumApplications</td>
+
+            <td><a asp-action="Edit" asp-route-id="@job.value.Id" class="btn btn-warning">Edit</a></td>
+            <td><a asp-action="Delete" asp-route-id="@job.value.Id" class="btn btn-danger" onclick="ConfirmDelete(event)">Delete</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts{
+    <script>
+        function GetDept(id) {
+            let parentElement = event.target.parentElement
+            $.ajax({
+                url: `/Depts/GetDept/${id}`,
+                method: "get",
+                success: (result) => {
+                    parentElement.innerHTML = `<h6>${result}<h6>`;
+                },
+                error: (err) => {
+                    console.log(err);
+                }
+            })
+        }
+    </script>
+}

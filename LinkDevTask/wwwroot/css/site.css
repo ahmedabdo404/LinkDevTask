@@ -1,0 +1,55 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+/* site*/
+
+p{
+    margin: 0;
+}
+
+.Profile-img {
+    width: 1.5rem;
+}
+
+#PictureImg {
+    width: 250px;
+    height: 250px;
+    object-fit: fill;
+}
+
+#UserName {
+    cursor: not-allowed;
+}
+
+.formFileSm {
+    cursor: pointer;
+}
+
+@media (max-width: 767px) {
+
+    .job {
+        flex-direction: column;
+        height: fit-content;
+    }
+
+    .job > img {
+        width: auto;
+        height: 300px;
+    }
+}

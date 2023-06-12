@@ -1,0 +1,69 @@
+﻿@model List<JobVM>
+
+@section Styles{
+    <link rel="stylesheet" href="~/css/job.css">
+    <link href="~/lib/datatables/css/dataTables.bootstrap4.css" rel="stylesheet" />
+}
+
+<div id="notFoundMessage" class="alert alert-warning d-none" role="alert">
+    There Is no Jobs Found
+</div>
+
+<table id="jobs-table" class="table table-striped table-bordered dt-responsive nowrap">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Created</th>
+            <th>ValidFrom</th>
+            <th>ValidTo</th>
+            <th>MaximumApplications</th>
+            <th>View Job</th>
+        </tr>
+    </thead>
+</table>
+
+@section Scripts{
+    <script src="~/lib/datatables/js/jquery.dataTables.js"></script>
+    <script src="~/lib/datatables/js/dataTables.bootstrap4.js"></script>
+    <script>
+        ﻿$(document).ready(function () {
+            $('#jobs-table').dataTable({
+                "processing": true,
+                "serverSide": true,
+                "filter": true,
+                "iDisplayLength": 3,
+                "ajax": {
+                    "url": "@Url.Action("GetPagedJobs", "Job")",
+                    "type": "POST",
+                    "datatype": "json"
+                },
+                "columnDefs": [{
+                    "targets": [0],
+                    "visible": false,
+                    "searchable": false
+                }],
+                "columns": [
+                    { "data": "id", "name": "Id", "autowidth": true, "orderable": false },
+                    { "data": "name", "name": "Name", "autowidth": true, "orderable": false },
+                    { "data": "createdAt", "name": "CreatedAt", "autowidth": true , "orderable": false,
+                        "render": function (data, type, row) { return new Date(data).toDateString()}
+                    },
+                    { "data": "validFrom", "name": "ValidFrom", "autowidth": true, "orderable": false ,
+                        "render": function (data, type, row) { return new Date(data).toDateString()}},
+                    { "data": "validTo", "name": "ValidTo", "autowidth": true, "orderable": false ,
+                        "render": function (data, type, row) { return new Date(data).toDateString()}},
+                    { "data": "maximumApplications", "name": "MaximumApplications", "autowidth": true, "orderable": false },
+                    {
+                        "render": function (data, type, row) { return `<a href="/Job/ViewJob/${row.id}" class="btn btn-warning"><p>View Job</p></a>` },
+                        "orderable": false
+                    }
+                ],
+                infoCallback: function(settings, start, end, max, total, pre){
+                    return "Showing " + start + " to " + end + " of " + total + " entries";
+                }
+
+            });
+        });
+    </script>
+}

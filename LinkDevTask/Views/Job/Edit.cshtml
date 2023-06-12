@@ -1,0 +1,108 @@
+﻿@model JobVM
+
+@{
+    SelectList CatsList = new SelectList(ViewBag.categories, "Id", "Name");
+}
+
+<h1>Edit Job</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-5">
+
+        <form asp-action="Edit" enctype="multipart/form-data">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <input asp-for="Id" hidden class="form-control" />
+
+            @if (Model.Picture is not null && Model.Picture?.Length > 0)
+            {
+                <div class="text-center">
+                    <img id="PictureImg" class="rounded-circle" alt="@(Model.Name)-Photo" src="data:image/*;base64,@(Convert.ToBase64String(Model.Picture))" />
+                </div>
+            }
+            else
+            {
+                <div class="text-center">
+                    <img id="PictureImg" class="" alt="Photo" src="~/img/find-jobs-icon.svg" />
+                </div>
+            }
+            
+            <div class="form-group">
+                <label asp-for="Picture" class="formFileSm"><i class="bi bi-image-alt mx-2"></i>Add Picture...</label>
+                <input asp-for="Picture" type="file" accept="image/*" class="form-control form-control-sm" />
+                <span asp-validation-for="Picture" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" class="form-control" rows="4" placeholder="Enter Description" style="resize:none"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Responsibilities" class="control-label"></label>
+                <textarea asp-for="Responsibilities" class="form-control" rows="3" placeholder="Enter Responsibilities" style="resize:none"></textarea>
+                <span asp-validation-for="Responsibilities" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Skills" class="control-label"></label>
+                <textarea asp-for="Skills" class="form-control" rows="3" placeholder="Enter Skills" style="resize:none"></textarea>
+                <span asp-validation-for="Skills" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="CategoryId" class="control-label"></label>
+                @Html.DropDownListFor(d => d.CategoryId, CatsList,"Select Category", new {Class = "form-control"})
+                @Html.ValidationMessageFor(d => d.CategoryId, "", new{ @class = "text-danger"})
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ValidFrom" class="control-label"></label>
+                <input type="date" asp-for="ValidFrom" class="form-control" min="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                <span asp-validation-for="ValidFrom" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ValidTo" class="control-label"></label>
+                <input type="date" asp-for="ValidTo" class="form-control" min="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                <span asp-validation-for="ValidTo" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="MaximumApplications" class="control-label"></label>
+                <input asp-for="MaximumApplications" class="form-control" min="0" />
+                <span asp-validation-for="MaximumApplications" class="text-danger"></span>
+            </div>
+
+            <div class="form-group my-2">
+                <input type="submit" value="Update" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="GetAll" class="btn btn-link mt-2">Back</a>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial"></partial>
+
+    <script>
+        let PictureInput = document.getElementById("Picture");
+        let PictureImg = document.getElementById("PictureImg");
+
+        PictureInput.onchange = (e) => {
+            console.log(e.currentTarget.value)
+            PictureImg.src = window.URL.createObjectURL(e.currentTarget.files[0])
+        }
+    </script>
+}
+

@@ -1,0 +1,12 @@
+﻿@model UserVM
+
+@*<p>Currnet Rout Parameter is @ViewBag.UserId</p>*@
+
+<h3>ID: @Model.Id</h3>
+<h3>FirstName: @Model.FirstName</h3>
+<h3>LastName: @Model.LastName</h3>
+<h5>UserName: @Model.UserName</h5>
+<h5>Email: @Model.Email</h5>
+<h5>PhoneNumber: @Model.PhoneNumber</h5>
+
+<a asp-action="ManageUserRole" asp-route-id="@Model.Id" class="btn btn-warning mt-2">Manage Roles</a>

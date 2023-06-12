@@ -1,0 +1,72 @@
+﻿@using LinkDevTask.Application.Servcices.Interfaces;
+@model JobVM
+@inject IUserJobService _userJobService
+
+@section Styles{
+    <style>
+        .job-img{
+            width: 300px;
+            height: 300px;
+            object-fit: cover;
+        }
+    </style>
+}
+
+@{
+    var applyingTimeOut = Model.ValidTo < DateTime.Now;
+    var isUSer = User.IsInRole(UserRoles.User);
+    var isUserApplied = await _userJobService.IsUserApplied(User.Identity.Name, Model.Id);
+    var NumberOfAppliedUsers = await _userJobService.GetNumberOfAppliedUsers(User.Identity.Name, Model.Id);
+    var remainingVacancies = Model.MaximumApplications is null ? null : Model.MaximumApplications - NumberOfAppliedUsers;
+
+    var applyBtnDisabled = applyingTimeOut || !isUSer || isUserApplied || NumberOfAppliedUsers >= Model.MaximumApplications;
+}
+
+<div class="card text-center">
+    <div class="card-header">
+        Remaining Vacancies: @(remainingVacancies is null ? "Not Selected" : remainingVacancies)
+    </div>
+    <div class="card-body">
+        @if (Model.Picture is not null && Model.Picture?.Length > 0)
+        {
+            <img src="data:image/*;base64,@(Convert.ToBase64String(Model.Picture))" alt="@(Model.Name)-Photo"
+                 class="job-img rounded-circle my-3">
+        }
+        else
+        {
+            <img src="~/img/find-jobs-icon.svg" alt="@(Model.Name)-Photo"
+                 class="job-img rounded-circle my-3">
+        }
+        <h5 class="card-title">Position: @Model.CategoryName</h5>
+        <p class="card-text">Description: @Model.Description</p>
+        <p class="card-text">Responsibilities: @Model.Responsibilities</p>
+        <p class="card-text">Skills: @Model.Skills</p>
+        <a asp-controller="UserJob" asp-action="ApplyJob" asp-route-jobId="@Model.Id" class="job-apply btn btn-primary my-2
+            @(applyBtnDisabled ? "disabled" : "")">
+
+            @if (applyingTimeOut)
+            {
+                <p>Job Time Out</p>
+            }
+            else if (isUserApplied)
+            {
+                <p>already Applied</p>
+            }
+            else if (NumberOfAppliedUsers >= Model.MaximumApplications)
+            {
+                <p>Out of Vacancies</p>
+            }
+            else if (!isUSer)
+            {
+                <p>You are not a user</p>
+            }
+            else
+            {
+                <p>Easy Apply</p>
+            }
+        </a>
+    </div>
+    <div class="card-footer text-muted">
+        Last Date To Submit: @Model.ValidTo.ToString("d")
+    </div>
+</div>
