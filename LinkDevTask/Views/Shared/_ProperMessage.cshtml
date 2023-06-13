@@ -1,9 +1,12 @@
 ﻿@using LinkDevTask.Application.Servcices.Interfaces;
 @inject IJobService _jobService
 
-@if (_jobService.GetJobsCount().Equals(0))
+@if (User.IsInRole(UserRoles.Admin))
 {
-    <div class="alert alert-warning alert-dismissible fade show" role="alert">
-        <strong>Note:</strong> There is no Jobs Found.
-    </div>
+    if (_jobService.GetJobsCount().Equals(0))
+    {
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>Note:</strong> There is no Jobs Found.
+        </div>
+    }
 }

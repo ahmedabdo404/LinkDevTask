@@ -10,7 +10,9 @@ namespace LinkDevTask.Infrastructure.ModelConfiguration
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
-            builder.ToTable("Users", schema: "Identity");
+            builder.ToTable("Users", schema: "Identity")
+                .SeedUsers();
+
             builder.Property(u => u.Email).IsRequired();
             builder.Property(u => u.FirstName).IsRequired();
             builder.Property(u => u.LastName).IsRequired();
@@ -23,10 +25,8 @@ namespace LinkDevTask.Infrastructure.ModelConfiguration
             public void Configure(EntityTypeBuilder<IdentityRole> builder)
             {
                 builder.ToTable("Roles", schema: "Identity")
+                .SeedRoles();
 
-                // ↓↓ Seeding roles
-                .HasData( new IdentityRole(UserRoles.Admin) { NormalizedName = UserRoles.Admin.ToUpper() },
-                    new IdentityRole(UserRoles.User) { NormalizedName = UserRoles.User.ToUpper() });
             }
         }
 
@@ -55,8 +55,9 @@ namespace LinkDevTask.Infrastructure.ModelConfiguration
         {
             public void Configure(EntityTypeBuilder<IdentityUserRole<string>> builder)
             {
-                builder.HasKey(e => new { e.UserId, e.RoleId }); // composit key
-                builder.ToTable("UserRoles", schema: "Identity");
+                builder.HasKey(e => new { e.UserId, e.RoleId });
+                builder.ToTable("UserRoles", schema: "Identity")
+                    .SeedUserRole();
             }
         }
 

@@ -143,6 +143,46 @@ namespace LinkDevTask.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users", "Identity");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "a2e30d98-0852-4f9e-8fb6-246f0ab360e4",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "ffc64d6e-73b4-45e9-9918-4c2b1b28f2fa",
+                            CreatedAt = new DateTime(2023, 6, 13, 3, 43, 46, 944, DateTimeKind.Local).AddTicks(2029),
+                            Email = "admin@test.com",
+                            EmailConfirmed = false,
+                            FirstName = "admin",
+                            LastName = "admin",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "ADMIN@TEST.COM",
+                            NormalizedUserName = "ADMIN",
+                            PasswordHash = "AQAAAAEAACcQAAAAELqRkfVd8xyHLY2zZ5Xdy/GFF9Z9e83AtpZn+ph9tk80OAmGFSsQRR7/q70z0eG9qw==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "d8f1d17d-13a3-4b3f-9e3c-65073ebde16e",
+                            TwoFactorEnabled = false,
+                            UserName = "admin"
+                        },
+                        new
+                        {
+                            Id = "05d13987-53f8-4c7f-982c-8721f52d2b4e",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "ad4c4d06-2700-4066-8ae8-8824b58e2af7",
+                            CreatedAt = new DateTime(2023, 6, 13, 3, 43, 46, 947, DateTimeKind.Local).AddTicks(608),
+                            Email = "user@test.com",
+                            EmailConfirmed = false,
+                            FirstName = "user",
+                            LastName = "user",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "USER@TEST.COM",
+                            NormalizedUserName = "USER",
+                            PasswordHash = "AQAAAAEAACcQAAAAEMNzFYjc2An2bBT31dGD2mN/QeLSKlsptaKPy4iptv3O8+Ycy5qzDktnFUCJNs9WjQ==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "59221de6-c0e9-49ae-9eac-5372c089d4eb",
+                            TwoFactorEnabled = false,
+                            UserName = "user"
+                        });
                 });
 
             modelBuilder.Entity("LinkDevTask.Domain.Models.UserJob", b =>
@@ -181,15 +221,15 @@ namespace LinkDevTask.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "0574ef42-4f24-404b-8388-4633bd4a55fe",
-                            ConcurrencyStamp = "7cbb9a49-134a-4a6c-8177-c8d5514d837f",
+                            Id = "7b9bbdb3-88f0-4b85-bb10-50fb9548ce70",
+                            ConcurrencyStamp = "0fc58de8-482a-48c2-9ccc-d7ab28f3d07b",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "7f37081b-4d1b-4204-89e0-a2847cea58a8",
-                            ConcurrencyStamp = "3d32714e-4d4d-4a6e-bbbc-449803adbb62",
+                            Id = "e6a6c73d-5012-4272-82a8-cc66e29a70b9",
+                            ConcurrencyStamp = "716af88e-e5d0-4fda-aaf9-16e4e776a3b4",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -269,6 +309,18 @@ namespace LinkDevTask.Infrastructure.Migrations
                     b.HasKey("UserId", "RoleId");
 
                     b.ToTable("UserRoles", "Identity");
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "a2e30d98-0852-4f9e-8fb6-246f0ab360e4",
+                            RoleId = "7b9bbdb3-88f0-4b85-bb10-50fb9548ce70"
+                        },
+                        new
+                        {
+                            UserId = "05d13987-53f8-4c7f-982c-8721f52d2b4e",
+                            RoleId = "e6a6c73d-5012-4272-82a8-cc66e29a70b9"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>

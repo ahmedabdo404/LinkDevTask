@@ -1,10 +1,13 @@
-﻿using LinkDevTask.Application.Servcices.Implementations;
+﻿using LinkDevTask.Application.Consts;
+using LinkDevTask.Application.Servcices.Implementations;
 using LinkDevTask.Application.Servcices.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LinkDevTask.WebApp.Controllers
 {
+    [Authorize(Roles = UserRoles.Admin)]
     public class CategoryController : BaseController
     {
         private readonly ICategoryService _categoryService;

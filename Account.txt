@@ -1,2 +1,5 @@
 Admin: admin@test.com
 P@ssw0rd
+
+User: user@test.com
+P@ssw0rd
