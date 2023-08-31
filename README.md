@@ -1,4 +1,5 @@
 # LinkDevTask
 
-Apply the data base back up or update database from package manager console
-use the admin user if you restore the db for save of time
+update database from package manager console Or Restore to Db File in sql server
+
+use the Account File to login users
