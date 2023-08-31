@@ -40,16 +40,17 @@ namespace LinkDevTask.WebApp.StratupRegisters
         private static WebApplicationBuilder RegisterDataBaseServices(this WebApplicationBuilder builder)
         {
             builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(
-            builder.Configuration.GetConnectionString("DbConnection")), ServiceLifetime.Transient);
+                builder.Configuration.GetConnectionString("DbConnection")), ServiceLifetime.Transient
+            );
 
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             return builder;
         }
         private static WebApplicationBuilder RegisterPackagesServices(this WebApplicationBuilder builder)
         {
-            builder.Services.AddValidatorsFromAssemblyContaining<Program>();
-            builder.Services.AddFluentValidationAutoValidation();
-            builder.Services.AddFluentValidationClientsideAdapters();
+            builder.Services.AddValidatorsFromAssemblyContaining<Program>()
+                .AddFluentValidationAutoValidation()
+                .AddFluentValidationClientsideAdapters();
 
             return builder;
         }
